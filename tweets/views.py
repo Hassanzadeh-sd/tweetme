@@ -21,7 +21,7 @@ class tweet_Detailview(DetailView):
         print (self.kwargs)
         print(self.kwargs['pk'])
         id=self.kwargs.get('pk')
-        return Tweet.objects.get(id=2)
+        return Tweet.objects.get(id=id)
 
 # def tweet_detail_view(request, id):
 #     obj = Tweet.objects.get(pk=id)
