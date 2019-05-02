@@ -1,13 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}ListView{% endblock  %}
+
+{% block content %}
+<br>
 {% include "tweets/search.html" %}
 <br>
-<ul style="list-style:none;">
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+
 {% for obj in object_list %}
-    <li>{{ obj.user }} - {{ obj.content }}</li>
-{% empty %}
-    {% if request.GET.q %}
-        <li>No Tweet Found </li>
-    {% else %}
-        <li>EMPTY FORM</li>
-    {% endif %}
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                {% if obj.img %}
+                    <img src="img_avatar1.png" class="media-object" style="width:60px">
+                {% endif %}
+                </a>
+            </div>
+            <div class="media-body">
+                {{ obj.content }} | <br>
+                via : {{ obj.user }} | {{ obj.timestamp|timesince }} ago <a href="{{ obj.get_absolute_url }}">View</a>
+            </div>
+        </div>
+        <hr/>
+        {% empty %}
+            {% if request.GET.q %}
+                <p>No Tweet Found </p>
+            {% else %}
+                <p>EMPTY FORM</p>
+            {% endif %}
 {% endfor %}
-</ul>
+
+    </div>
+</div>
+
+{% endblock content %}

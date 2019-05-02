@@ -1,16 +1,17 @@
 from django.shortcuts import render
 from .models import Tweet
 from django.views.generic import DetailView, ListView
+from django.db.models import Q
 
 class tweet_listview(ListView):
     def get_queryset(self):
         qs = Tweet.objects.all()
-        print(self.request.GET)
-        print(self.request.GET.get("q",None))
         query = self.request.GET.get("q",None)
         if query is not None:
-            print("Not null")
-            qs = qs.filter(content__contains=query)
+            qs = qs.filter(
+                Q(content__contains=query) |
+                Q(user__username__contains=query)
+            )
         return qs
 
 
