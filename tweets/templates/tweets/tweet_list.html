@@ -1,0 +1,13 @@
+{% include "tweets/search.html" %}
+<br>
+<ul style="list-style:none;">
+{% for obj in object_list %}
+    <li>{{ obj.user }} - {{ obj.content }}</li>
+{% empty %}
+    {% if request.GET.q %}
+        <li>No Tweet Found </li>
+    {% else %}
+        <li>EMPTY FORM</li>
+    {% endif %}
+{% endfor %}
+</ul>
