@@ -3,9 +3,16 @@
 {% block title %}ListView{% endblock  %}
 
 {% block content %}
+
 <br>
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
+
+{% if not request.GET.q %}
+    <div class="">
+        {% include "tweets/form.html" with form=create_form action_url=create_url btn_title='Tweet'%}
+    </div>
+{% endif %}
 
 {% for obj in object_list %}
         <div class="media">

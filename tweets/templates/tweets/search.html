@@ -1,7 +1,7 @@
-<form action="\tweets\" method="GET" class = "navbar-form navbar-right" role="search">
+<form action="\tweets\search\" method="GET" class = "navbar-form navbar-left" role="search">
         <div class = "form-group">
             <label class = "sr-only" for = "name">search</label>
             <input class="form-control" type="text" name="q" placeholder="search" value="{{ request.GET.q }}">
         </div>
-        <button type = "submit" class = "btn btn-default">Submit</button>
+        <button type = "submit" class = "btn btn-default">Search</button>
 </form>
