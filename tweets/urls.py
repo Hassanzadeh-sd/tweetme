@@ -6,6 +6,8 @@ from .views import (
     tweet_Createview,
 )
 
+app_name = 'tweets'
+
 urlpatterns = [
     url(r'^$', RedirectView.as_view(url='/'), name='list'),
     url(r'^search/$', tweet_listview.as_view(), name='search'),

@@ -22,7 +22,8 @@ from tweets.views import tweet_listview
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', tweet_listview.as_view() , name='home'),
-    url(r'^tweets/', include('tweets.urls',namespace="tweet"))
+    url(r'^tweets/', include('tweets.urls', namespace="tweet")),
+    url(r'^api/tweets/', include('tweets.api.urls', namespace="tweet_api")),
 ]
 
 if settings.DEBUG:
