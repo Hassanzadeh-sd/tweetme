@@ -2,6 +2,23 @@
 
 {% block title %}ListView{% endblock  %}
 
+{% block script %}
+
+$( document ).ready(function() {
+    $.ajax({
+        url: 'http://127.0.0.1:8000/api/tweets/',
+        success: function(data , textStatus ,jqXHR){
+            console.log(textStatus)
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(textStatus)
+            console.log(errorThrown)
+        }
+    });
+});
+
+{% endblock script %}
+
 {% block content %}
 
 <br>
