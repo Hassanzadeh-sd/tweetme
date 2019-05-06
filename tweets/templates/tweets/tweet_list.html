@@ -26,15 +26,18 @@ $( document ).ready(function() {
                 var tweet_key = key;
                 var tweet_user = value.user.username;
                 var tweet_content = value.content;
+                var tweet_date_display = value.date_display;
+                var tweet_timesince = value.timesince;
                 console.log(tweet_user);
                 $('#tweet-container').append(
-                    "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + tweet_user + "<a href='#'> View </a></div></div><hr/>"
+                    "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + tweet_user + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href='#'> View </a></div></div><hr/>"
                 )
             });
         }
     }
 
     function fetchTweets(){
+        $('#tweet-container').html('');
         $.ajax({
             url: '/api/tweets/',
             data:{'q':query},
