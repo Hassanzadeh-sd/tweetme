@@ -33,18 +33,46 @@ $( document ).ready(function() {
             });
         }
     }
-    $.ajax({
-        url: 'http://127.0.0.1:8000/api/tweets/',
-        data:{'q':query},
-        success: function(data , textStatus ,jqXHR){
-            tweets_list = data;
-            parseTweets();
-        },
-        error: function(jqXHR, textStatus, errorThrown){
-            console.log(textStatus)
-            console.log(errorThrown)
-        }
+
+    function fetchTweets(){
+        $.ajax({
+            url: '/api/tweets/',
+            data:{'q':query},
+            success: function(data , textStatus ,jqXHR){
+                tweets_list = data;
+                parseTweets();
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(textStatus)
+                console.log(errorThrown)
+            }
+        });
+    }
+
+    fetchTweets()
+
+    // this is the id of the form
+    $("#create_form").submit(function(e) {
+
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+        console.log("Create")
+
+        var form = $(this);
+        var url = form.attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: '/api/tweets/create/',
+            data: form.serialize(), // serializes the form's elements.
+            success: function(data)
+            {
+                console.log(data);
+                fetchTweets();
+            }
+            }); 
+
     });
+
 });
 
 {% endblock script %}
@@ -58,7 +86,7 @@ $( document ).ready(function() {
 
 {% if not request.GET.q %}
     <div class="">
-        {% include "tweets/form.html" with form=create_form action_url=create_url btn_title='Tweet'%}
+        {% include "tweets/form.html" with form=create_form action_url=create_url btn_title='Tweet' form_id='create_form' %}
     </div>
 {% endif %}
 
