@@ -7,5 +7,5 @@ from .views import (
 app_name = "tweets"
 
 urlpatterns = [
-    url(r'^$', TweetListAPIView.as_view() , name='Tweet_api_list'),
+    url(r'^$', TweetListAPIView.as_view() , name='list'),
 ] 
