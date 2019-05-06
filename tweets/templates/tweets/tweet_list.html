@@ -3,12 +3,42 @@
 {% block title %}ListView{% endblock  %}
 
 {% block script %}
-
 $( document ).ready(function() {
+    console.log("working");
+    var tweets_list = [];
+    var query = getParameterByName('q');
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    function parseTweets(){
+        if (tweets_list == 0){
+             $('#tweet-container').text("No Tweet currently found");
+        }else{
+            $.each( tweets_list, function( key, value ) {
+                var tweet_key = key;
+                var tweet_user = value.user.username;
+                var tweet_content = value.content;
+                console.log(tweet_user);
+                $('#tweet-container').append(
+                    "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + tweet_user + "<a href='#'> View </a></div></div><hr/>"
+                )
+            });
+        }
+    }
     $.ajax({
         url: 'http://127.0.0.1:8000/api/tweets/',
+        data:{'q':query},
         success: function(data , textStatus ,jqXHR){
-            console.log(textStatus)
+            tweets_list = data;
+            parseTweets();
         },
         error: function(jqXHR, textStatus, errorThrown){
             console.log(textStatus)
@@ -22,6 +52,7 @@ $( document ).ready(function() {
 {% block content %}
 
 <br>
+
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
 
@@ -31,6 +62,9 @@ $( document ).ready(function() {
     </div>
 {% endif %}
 
+<div id="tweet-container">
+</div>
+{% comment %} 
 {% for obj in object_list %}
         <div class="media">
             <div class="media-left">
@@ -52,7 +86,7 @@ $( document ).ready(function() {
             {% else %}
                 <p>EMPTY FORM</p>
             {% endif %}
-{% endfor %}
+{% endfor %} {% endcomment %}
 
     </div>
 </div>
