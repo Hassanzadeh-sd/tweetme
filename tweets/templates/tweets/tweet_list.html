@@ -18,26 +18,32 @@ $( document ).ready(function() {
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
 
+    function attach_tweet(tweetvalue, prepend){
+        var tweet_user = tweetvalue.user.username;
+        var tweet_content = tweetvalue.content;
+        var tweet_date_display = tweetvalue.date_display;
+        var tweet_timesince = tweetvalue.timesince;
+        var tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + tweet_user + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href='#'> View </a></div></div><hr/>";
+        
+        if (prepend == true){
+
+            $('#tweet-container').prepend(tweet_formattedhtml);
+        }else{
+            $('#tweet-container').append(tweet_formattedhtml);
+        }
+    }
+
     function parseTweets(){
         if (tweets_list == 0){
              $('#tweet-container').text("No Tweet currently found");
         }else{
             $.each( tweets_list, function( key, value ) {
-                var tweet_key = key;
-                var tweet_user = value.user.username;
-                var tweet_content = value.content;
-                var tweet_date_display = value.date_display;
-                var tweet_timesince = value.timesince;
-                console.log(tweet_user);
-                $('#tweet-container').append(
-                    "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + tweet_user + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href='#'> View </a></div></div><hr/>"
-                )
+                attach_tweet(value , false)
             });
         }
     }
 
     function fetchTweets(){
-        $('#tweet-container').html('');
         $.ajax({
             url: '/api/tweets/',
             data:{'q':query},
@@ -62,6 +68,7 @@ $( document ).ready(function() {
 
         var form = $(this);
         var url = form.attr('action');
+        var this_ = $(this)
 
         $.ajax({
             type: "POST",
@@ -69,8 +76,8 @@ $( document ).ready(function() {
             data: form.serialize(), // serializes the form's elements.
             success: function(data)
             {
-                console.log(data);
-                fetchTweets();
+                this_.find('input[type=text],textarea').val('')
+                attach_tweet(data , true)
             }
             }); 
 
