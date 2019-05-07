@@ -8,6 +8,7 @@ $( document ).ready(function() {
     var tweets_list = [];
     var query = getParameterByName('q');
 
+    // get q parameter in url _ GET method
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
         name = name.replace(/[\[\]]/g, '\\$&');
@@ -25,14 +26,15 @@ $( document ).ready(function() {
         var tweet_timesince = tweetvalue.timesince;
         var tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + tweet_user + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href='#'> View </a></div></div><hr/>";
         
+        // if prepen is true add to above of list        
         if (prepend == true){
-
             $('#tweet-container').prepend(tweet_formattedhtml);
         }else{
             $('#tweet-container').append(tweet_formattedhtml);
         }
     }
 
+    // read all tweet from api and parse them
     function parseTweets(){
         if (tweets_list == 0){
              $('#tweet-container').text("No Tweet currently found");
@@ -60,27 +62,48 @@ $( document ).ready(function() {
 
     fetchTweets()
 
-    // this is the id of the form
-    $("#create_form").submit(function(e) {
+    var character_counter = 140; 
+    var char_count = 0;
+    $("#create_form").append("<span id='tweet_character_counter'> &nbsp; " + character_counter + "</span>")
+    var txt_character_counter = $("#tweet_character_counter");
 
+    $("#create_form textarea").keyup(function( event ) {
+        char_count = $(this).val().length;
+        character_counter = 140 - char_count;
+        txt_character_counter.text("\xa0" + character_counter);
+        if (character_counter > 0){
+            txt_character_counter.css("color", "#000");
+        }else if(character_counter == 0){
+            txt_character_counter.css("color", "#ccc");
+        }else if(character_counter < 0){
+            txt_character_counter.css("color", "red");
+        }
+    });
+
+    // after submit form add new tweet and add that in tweets list
+    $("#create_form").submit(function(e) {
         e.preventDefault(); // avoid to execute the actual submit of the form.
-        console.log("Create")
 
         var form = $(this);
         var url = form.attr('action');
         var this_ = $(this)
 
-        $.ajax({
-            type: "POST",
-            url: '/api/tweets/create/',
-            data: form.serialize(), // serializes the form's elements.
-            success: function(data)
-            {
-                this_.find('input[type=text],textarea').val('')
-                attach_tweet(data , true)
-            }
+        // if tweet character grather than 140 create working
+        if (character_counter < 0 ){
+            console.log("Cannot Create")
+        }else{
+            $.ajax({
+                type: "POST",
+                url: '/api/tweets/create/',
+                data: form.serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    this_.find('input[type=text],textarea').val('')
+                    attach_tweet(data , true)
+                }
             }); 
-
+        }
+        
     });
 
 });
@@ -101,6 +124,7 @@ $( document ).ready(function() {
 {% endif %}
 
 <div id="tweet-container">
+<br>
 </div>
 {% comment %} 
 {% for obj in object_list %}
