@@ -45,12 +45,24 @@ $( document ).ready(function() {
         }
     }
 
-    function fetchTweets(){
+    var next_url;
+    var fetch_url;
+
+    function fetchTweets(url){
+        if (next_url){
+            fetch_url = next_url;
+        }else{
+            fetch_url = '/api/tweets/';
+        }
         $.ajax({
-            url: '/api/tweets/',
+            url: fetch_url,
             data:{'q':query},
             success: function(data , textStatus ,jqXHR){
-                tweets_list = data;
+                tweets_list = data.results;
+                next_url = data.next;
+                if (!next_url){
+                    $("#loadmore").css('display','none')
+                }
                 parseTweets();
             },
             error: function(jqXHR, textStatus, errorThrown){
@@ -106,6 +118,12 @@ $( document ).ready(function() {
         
     });
 
+    $("#loadmore").click(function(){
+        if (next_url){
+            fetchTweets(next_url)
+        }
+    });
+
 });
 
 {% endblock script %}
@@ -126,6 +144,8 @@ $( document ).ready(function() {
 <div id="tweet-container">
 <br>
 </div>
+<span id="loadmore">Load More ... </span>
+<br><br>
 {% comment %} 
 {% for obj in object_list %}
         <div class="media">
