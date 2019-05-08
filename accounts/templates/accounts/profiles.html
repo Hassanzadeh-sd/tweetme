@@ -2,17 +2,20 @@
 
 {% block title %}
 Profiles {{obj_user.username}}
-{% endblock title %}Profiles {{obj_ser.username}}
+{% endblock title %}Profiles {{obj_user.username}}
 
 
 {% block content %}
 
 <div class="row">
-    <div class="col-sm-3 col-xs-12" style="background-color:red;">
-        <h2>{{obj_user.username}}</h2>
+    <div class="col-sm-3 col-xs-12">
+        <ul style="list-style:none;">
+            <li><h2>{{obj_user.username}}</h2></li>
+            <li><h4>Following : {{ obj_user.profile.following.all.count }}</h4></li>
+            <li><h4>Followers : {{ obj_user.followed_by.all.count }}</h4></li>
+        </ul>
     </div>
     <div class="col-sm-9 col-xs-12">
-
         {% for obj in obj_user.tweet_set.all %}
             <div class="media">
                 <div class="media-body">
@@ -25,6 +28,21 @@ Profiles {{obj_user.username}}
             <p>No create tweet yet.</p>
         {% endfor %}
 
+        <h2>Following</h2><br>
+        {% for obj in obj_user.profile.following.all %}
+            <a href="/{{ obj.username }}">{{ obj.username }}</a><br>
+        {% empty %}
+            <p>not followind any user</p><br>
+        {% endfor %}
+
+        <h2>Followed By</h2><br>
+
+        {% for obj in obj_user.followed_by.all %}
+            <a href="/{{ obj.user.username }}">{{ obj.user.username }}</a><br>
+        {% empty %}
+            <p>not followed by any user</p><br>
+        {% endfor %}
+        <br><br>
     </div>
 </div>
 
