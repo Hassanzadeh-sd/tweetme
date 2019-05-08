@@ -24,7 +24,8 @@ $( document ).ready(function() {
         var tweet_content = tweetvalue.content;
         var tweet_date_display = tweetvalue.date_display;
         var tweet_timesince = tweetvalue.timesince;
-        var tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + tweet_user + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href='#'> View </a></div></div><hr/>";
+        var profile_url = tweetvalue.user.profile_url;
+        var tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href='#'> View </a></div></div><hr/>";
         
         // if prepen is true add to above of list        
         if (prepend == true){

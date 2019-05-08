@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', tweet_listview.as_view() , name='home'),
     url(r'^tweets/', include('tweets.urls', namespace="tweet")),
+    url(r'^', include('accounts.urls', namespace="profiles")),
     url(r'^api/tweets/', include('tweets.api.urls', namespace="tweet_api")),
 ]
 

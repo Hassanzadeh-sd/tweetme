@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+Profiles {{obj_user.username}}
+{% endblock title %}Profiles {{obj_ser.username}}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-3 col-xs-12" style="background-color:red;">
+        <h2>{{obj_user.username}}</h2>
+    </div>
+    <div class="col-sm-9 col-xs-12">
+
+        {% for obj in obj_user.tweet_set.all %}
+            <div class="media">
+                <div class="media-body">
+                    {{ obj.content }} | <br>
+                    via : {{ obj.user }} | {{ obj.timestamp|timesince }} ago <a href="{{ obj.get_absolute_url }}">View</a>
+                </div>
+            </div>
+            <hr/>
+        {% empty %}
+            <p>No create tweet yet.</p>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock content %}
