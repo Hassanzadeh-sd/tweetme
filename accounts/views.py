@@ -12,18 +12,18 @@ class account_Detailview(DetailView):
     context_object_name = 'obj_user'
     template_name = 'accounts/profiles.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["is_follow"] = UserProfile.objects.is_follow(self.request.user, self.get_object())
+        return context
+    
+
 class toggle_Followview(View):
     def get(self, request, username, *args, **kwargs):
         toggle_user = get_object_or_404(User , username = username)
-        
-        try:
-            if request.user.is_authenticated():
-                user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-                if (toggle_user in user_profile.following.all()):
-                    user_profile.following.remove(toggle_user)
-                else:
-                    user_profile.following.add(toggle_user)
-        except:
-            pass
+        print("toggle")
+
+        if request.user.is_authenticated:
+            is_follow = UserProfile.objects.toggle_follow(request.user , toggle_user)
 
         return redirect("profiles:detail", username=username )
