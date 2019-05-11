@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from django.shortcuts import reverse
 class UserProfileManager(models.Manager):
     def all(self):
         qs = self.get_queryset().all()
@@ -36,6 +37,13 @@ class UserProfile(models.Model):
     user        = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile", blank=True)
     following   = models.ManyToManyField(User,related_name="followed_by", blank=True)   
     objects = UserProfileManager()
+
+    def get_following(self):
+        users = self.following.all()
+        return users.exclude(username=self.user.username)
+    
+    def get_follow_url(self):
+        return reverse('profiles:follow', username=self.user.username)
 
     def __str__(self):
         return self.user.username
