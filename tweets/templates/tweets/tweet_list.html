@@ -8,6 +8,14 @@ $( document ).ready(function() {
     var tweets_list = [];
     var query = getParameterByName('q');
 
+    function updateHashLinks(){
+        $(".media-body").each(function(data){
+            var hashtagRegx = /(^|\s)#([\w\d-]+)/g
+            var newText = $(this).html().replace(hashtagRegx, "$1<a href='/tags/$2/'>#$2</a>")
+            $(this).html(newText)
+        })
+    }
+
     // get q parameter in url _ GET method
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
@@ -65,6 +73,7 @@ $( document ).ready(function() {
                     $("#loadmore").css('display','none')
                 }
                 parseTweets();
+                updateHashLinks();
             },
             error: function(jqXHR, textStatus, errorThrown){
                 console.log(textStatus)
