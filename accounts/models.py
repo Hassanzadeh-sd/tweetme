@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.db.models.signals import post_save
 class UserProfileManager(models.Manager):
     def all(self):
         qs = self.get_queryset().all()
@@ -39,3 +39,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+def post_save_user_receiver(sender , instance, created , *args, **kwargs):
+    print("HIIII SIGNAL")
+    print(instance)
+    if created:
+        new_profile = UserProfile.objects.get_or_created(user = instance)
+
+post_save.connect(post_save_user_receiver, sender=User)

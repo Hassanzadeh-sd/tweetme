@@ -11,7 +11,7 @@ Profiles {{obj_user.username}}
     <div class="col-sm-3 col-xs-12">
         <ul style="list-style:none;">
             <li><h2>{{obj_user.username}}</h2></li>
-            <li><h2><a class="btn btn-link" href="{% url 'profiles:follow' username=obj_user.username %}">{% if is_follow %}Unfollow{%else%}Follow{%endif%}</a></h2></li>
+            {% if user != obj_user %}<li><h2><a class="btn btn-link" href="{% url 'profiles:follow' username=obj_user.username %}">{% if is_follow %}Unfollow{%else%}Follow{%endif%}</a></h2></li>{% endif %}
             <li><h4>Following : {{ obj_user.profile.following.all.count }}</h4></li>
             <li><h4>Followers : {{ obj_user.followed_by.all.count }}</h4></li>
         </ul>

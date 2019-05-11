@@ -21,7 +21,6 @@ class account_Detailview(DetailView):
 class toggle_Followview(View):
     def get(self, request, username, *args, **kwargs):
         toggle_user = get_object_or_404(User , username = username)
-        print("toggle")
 
         if request.user.is_authenticated:
             is_follow = UserProfile.objects.toggle_follow(request.user , toggle_user)
