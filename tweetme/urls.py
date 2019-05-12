@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from tweets.views import tweet_listview
+from hashtags.views import tags_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', tweet_listview.as_view() , name='home'),
     url(r'^tweets/', include('tweets.urls', namespace="tweet")),
+    url(r'^tags/(?P<tag>.*)/$', tags_view.as_view() , name="hashtag"),
     url(r'^', include('accounts.urls', namespace="profiles")),
     url(r'^api/tweets/', include('tweets.api.urls', namespace="tweet_api")),
 ]

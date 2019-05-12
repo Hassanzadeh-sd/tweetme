@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Hashtags{% endblock  %}
+
+{% block content %}
+
+<br>
+
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <div id="tweet-container">
+            {% for obj in  tag_tweets %}
+            <div class='media'>
+                <div class='media-body'>{{obj.content}}
+                <br> via :
+                <a href='/{{obj.user.profile}}/'>{{obj.user.profile}}</a>
+                    {{obj.get_date_display}} | {{obj.get_timesince}}"<a href='#'> View </a>
+                </div>
+                </div>
+            <hr/>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
