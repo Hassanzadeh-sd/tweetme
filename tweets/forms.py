@@ -10,5 +10,6 @@ class Tweetmodelform(forms.ModelForm):
     class Meta:
         model = Tweet
         fields = [
+            'parent',
             'content'
         ]

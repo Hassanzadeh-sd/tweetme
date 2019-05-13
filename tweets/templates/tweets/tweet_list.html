@@ -32,8 +32,11 @@ $( document ).ready(function() {
         var tweet_content = tweetvalue.content;
         var tweet_date_display = tweetvalue.date_display;
         var tweet_timesince = tweetvalue.timesince;
+        var tweet_link = "/tweets/" + tweetvalue.id;
         var profile_url = tweetvalue.user.profile_url;
-        var tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href='#'> View </a></div></div><hr/>";
+        var is_retweet = tweetvalue.is_retweet;
+        retweet_lable = (is_retweet ? 'Retweeted' : '')
+        var tweet_formattedhtml = "<div class='media'><div class='media-body'><p>" + retweet_lable + "</p>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a></div></div><hr/>";
         
         // if prepen is true add to above of list        
         if (prepend == true){
@@ -156,6 +159,7 @@ $( document ).ready(function() {
 </div>
 <span id="loadmore">Load More ... </span>
 <br><br>
+
 {% comment %} 
 {% for obj in object_list %}
         <div class="media">

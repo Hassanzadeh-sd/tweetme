@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from .models import Tweet
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, View
 from django.db.models import Q
 from .forms import Tweetmodelform
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 class tweet_listview(ListView):
     def get_queryset(self):
@@ -37,12 +38,13 @@ class tweet_Createview(CreateView):
         form.instance.user = self.request.user
         return super(tweet_Createview, self).form_valid(form)
 
-
-
-
-
-
-
+class retweet_View(View):
+    def get(self, request, pk, *args, **kwargs):
+        tweet = get_object_or_404(Tweet, pk = pk)
+        if request.user.is_authenticated:
+            new_tweet = Tweet.objects.retweet(request.user, tweet)
+            return HttpResponseRedirect(new_tweet.get_absolute_url())
+        return  HttpResponseRedirect(tweet.get_absolute_url())
 
 
 
