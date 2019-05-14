@@ -11,7 +11,10 @@ $( document ).ready(function() {
     function updateHashLinks(){
         $(".media-body").each(function(data){
             var hashtagRegx = /(^|\s)#([\w\d-]+)/g
-            var newText = $(this).html().replace(hashtagRegx, "$1<a href='/tags/$2/'>#$2</a>")
+            var usernameRegx = /(^|\s)@([\w\d-]+)/g
+            var newText;
+            newText = $(this).html().replace(hashtagRegx, "$1<a href='/tags/$2/'>#$2</a>")
+            newText = newText.replace(usernameRegx, "$1<a href='/$2/'>@$2</a>")
             $(this).html(newText)
         })
     }
@@ -35,11 +38,12 @@ $( document ).ready(function() {
         var tweet_link = "/tweets/" + tweetvalue.id;
         var profile_url = tweetvalue.user.profile_url;
         var tweet_formattedhtml;
+        var retweet_link = "/api/tweets/retweet/" + tweetvalue.id
         if (retweet_flag && tweetvalue.parent){
             var mainTweet = tweetvalue.parent
-            tweet_formattedhtml = "<div class='media'><div class='media-body'><span style='color:#276090;'>Retweet Via <a href='/" + mainTweet.user.username + "/'>" + mainTweet.user.username + "</a> On " + mainTweet.date_display + "</span><br>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a href='" + tweet_link + "/retweet'>Retweet</a></div></div><hr/>";
+            tweet_formattedhtml = "<div class='media'><div class='media-body'><span style='color:#276090;'>Retweet Via <a href='/" + mainTweet.user.username + "/'>" + mainTweet.user.username + "</a> On " + mainTweet.date_display + "</span><br>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a></div></div><hr/>";
         }else{
-            tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a href='" + tweet_link + "/retweet'>Retweet</a></div></div><hr/>";
+            tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a></div></div><hr/>";
         }
         
         
@@ -58,7 +62,7 @@ $( document ).ready(function() {
         }else{
             $.each( tweets_list, function( key, value ) {
                 if (value.parent){
-                    attach_tweet(value , false, true)    
+                    attach_tweet(value , false, true)
                 }else{
                     attach_tweet(value , false)
                 }
@@ -114,7 +118,6 @@ $( document ).ready(function() {
         }
     });
 
-    // after submit form add new tweet and add that in tweets list
     $("#create_form").submit(function(e) {
         e.preventDefault(); // avoid to execute the actual submit of the form.
 
@@ -134,6 +137,7 @@ $( document ).ready(function() {
                 {
                     this_.find('input[type=text],textarea').val('')
                     attach_tweet(data , true)
+                    updateHashLinks();
                 }
             }); 
         }
@@ -146,6 +150,21 @@ $( document ).ready(function() {
         }
     });
 
+    $(document).on('click', ".retweet", function(e) {        
+        e.preventDefault()
+        retweet_html =  $(this)
+        url = retweet_html.attr("href")
+        $.ajax({
+            url: url,
+            success: function(data)
+            {
+                attach_tweet(data , true, true)
+            },
+            error: function(data, textStatus, errorThrown){
+                alert(data.responseJSON.message)
+            }
+        }); 
+    });
 });
 
 {% endblock script %}
@@ -153,7 +172,6 @@ $( document ).ready(function() {
 {% block content %}
 
 <br>
-
 <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
 
@@ -162,9 +180,9 @@ $( document ).ready(function() {
         {% include "tweets/form.html" with form=create_form action_url=create_url btn_title='Tweet' form_id='create_form' %}
     </div>
 {% endif %}
-
-<div id="tweet-container">
 <br>
+<div id="tweet-container">
+
 </div>
 <span id="loadmore">Load More ... </span>
 <br><br>
