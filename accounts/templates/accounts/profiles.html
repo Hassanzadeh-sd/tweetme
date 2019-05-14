@@ -4,6 +4,11 @@
 Profiles {{obj_user.username}}
 {% endblock title %}Profiles {{obj_user.username}}
 
+{% block script %}
+$( document ).ready(function() {
+    loadTweetContainer("tweet-container")
+});
+{% endblock script %}
 
 {% block content %}
 
@@ -18,17 +23,11 @@ Profiles {{obj_user.username}}
     </div>
     <div class="col-sm-9 col-xs-12">
         <br>
-        {% for obj in obj_user.tweet_set.all %}
-            <div class="media">
-                <div class="media-body">
-                    {{ obj.content }} | <br>
-                    via : {{ obj.user }} | {{ obj.timestamp|timesince }} ago <a href="{{ obj.get_absolute_url }}">View</a>
-                </div>
-            </div>
-            <hr/>
-        {% empty %}
-            <p>No create tweet yet.</p>
-        {% endfor %}
+        
+        <div id="tweet-container"  data-url="/api/tweets/">
+
+        </div>
+        <span id="loadmore">Load More ... </span>
 
         <h2>Following</h2><br>
         {% for obj in obj_user.profile.following.all %}
