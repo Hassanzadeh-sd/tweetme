@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^tags/(?P<tag>.*)/$', tags_view.as_view() , name="hashtag"),
     url(r'^', include('accounts.urls', namespace="profiles")),
     url(r'^api/tweets/', include('tweets.api.urls', namespace="tweet_api")),
+    url(r'^api/', include('accounts.api.urls', namespace="profile_api")),
 ]
 
 if settings.DEBUG:

@@ -28,7 +28,7 @@
     var query = getParameterByName('q');
     var tweetContainer;
     tweetContainer = $('#' + tweetContainerID )
-    var APIUrl=tweetContainer.attr("data-url");
+    var APIUrl=tweetContainer.attr("data-url") || "/api/tweets/";
 
     function updateHashLinks(){
         $(".media-body").each(function(data){
