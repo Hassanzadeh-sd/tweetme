@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.utils.timesince import timesince
 from django.db.models.signals import post_save
-
+from hashtags.signals import parsed_hashtags
 class TweetManager(models.Manager):
     def retweet(self, user , parent_obj):
         if parent_obj.parent:
@@ -55,6 +55,6 @@ def post_save_tweet_receiver(sender , instance, created , *args, **kwargs):
 
         hashtag_regx = r'#(?P<hashtag>[\w\d-]+)'
         hashtags = re.findall(hashtag_regx ,instance.content)
-        print(hashtags)
+        parsed_hashtags.send(sender = instance.__class__ ,hashtag_list=hashtags)
 
 post_save.connect(post_save_tweet_receiver, sender=Tweet)
