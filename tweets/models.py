@@ -24,6 +24,16 @@ class TweetManager(models.Manager):
         obj.save()
         return obj
 
+    def liketoggle(self, user , tweet_obj):
+        if (user in tweet_obj.liked.all()):
+            is_like = False
+            tweet_obj.liked.remove(user)
+        else:
+            is_like = True
+            tweet_obj.liked.add(user)
+        
+        return is_like
+
 class Tweet(models.Model):
     parent      = models.ForeignKey("self", blank=True, null=True, on_delete=models.CASCADE)
     user        = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete = models.CASCADE)
@@ -31,6 +41,7 @@ class Tweet(models.Model):
     updated     = models.DateTimeField(auto_now=True)
     timestamp   = models.DateTimeField(auto_now_add=True)
     objects     = TweetManager()
+    liked       = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True ,related_name='liked')
 
     def get_absolute_url(self):
         return reverse("tweet:detail", kwargs={"pk": self.pk})

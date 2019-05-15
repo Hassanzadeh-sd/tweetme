@@ -36,7 +36,6 @@ class TweetCreateAPIView(generics.CreateAPIView):
     def perform_create(self ,serializer):
         serializer.save(user=self.request.user)
 
-
 class RetweetAPIView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -52,3 +51,16 @@ class RetweetAPIView(APIView):
                 return Response(data)
             message = "Cannot Retweet the same on day"
         return Response({"message": message}, status=400)
+
+class LikeAPIView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk, format=None):
+        tweet_qs = Tweet.objects.filter(pk=pk)
+        message = "Not allowed"
+        
+        if (tweet_qs.exists() and tweet_qs.count() == 1):
+            is_like = Tweet.objects.liketoggle(request.user,tweet_qs.first())
+            return Response({'liked':is_like})
+
+        return Response({"message": message}, status=400)        

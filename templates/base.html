@@ -63,9 +63,9 @@
         var retweet_link = "/api/tweets/retweet/" + tweetvalue.id
         if (retweet_flag && tweetvalue.parent){
             var mainTweet = tweetvalue.parent
-            tweet_formattedhtml = "<div class='media'><div class='media-body'><span style='color:#276090;'>Retweet Via <a href='/" + mainTweet.user.username + "/'>" + mainTweet.user.username + "</a> On " + mainTweet.date_display + "</span><br>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a></div></div><hr/>";
+            tweet_formattedhtml = "<div class='media'><div class='media-body'><span style='color:#276090;'>Retweet Via <a href='/" + mainTweet.user.username + "/'>" + mainTweet.user.username + "</a> On " + mainTweet.date_display + "</span><br>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>Like</a></div></div><hr/>";
         }else{
-            tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a></div></div><hr/>";
+            tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>Like</a></div></div><hr/>";
         }
         
         
@@ -181,6 +181,27 @@
             }
         }); 
     });
+
+    $(document).on('click', ".tweet-like", function(e) {        
+        e.preventDefault()
+        this_ =  $(this)
+        var tweet_id = this_.attr('data-id')
+        $.ajax({
+            url: '/api/tweets/like/' + tweet_id,
+            success: function(data)
+            {
+                if (data.liked){
+                    this_.text("liked")
+                }else{
+                    this_.text("Unliked")
+                }
+            },
+            error: function(data, textStatus, errorThrown){
+                alert(data.responseJSON.message)
+            }
+        }); 
+    });
+
 }
     </script>
 
