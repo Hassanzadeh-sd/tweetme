@@ -61,11 +61,18 @@
         var profile_url = tweetvalue.user.profile_url;
         var tweet_formattedhtml;
         var retweet_link = "/api/tweets/retweet/" + tweetvalue.id
+        var likes = tweetvalue.likes;
+        var didlike =tweetvalue.didlike
+        var likeValue = "Like"
+        if (didlike){
+            likeValue = "Unlike"
+        }
+        
         if (retweet_flag && tweetvalue.parent){
             var mainTweet = tweetvalue.parent
-            tweet_formattedhtml = "<div class='media'><div class='media-body'><span style='color:#276090;'>Retweet Via <a href='/" + mainTweet.user.username + "/'>" + mainTweet.user.username + "</a> On " + mainTweet.date_display + "</span><br>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>Like</a></div></div><hr/>";
+            tweet_formattedhtml = "<div class='media'><div class='media-body'><span style='color:#276090;'>Retweet Via <a href='/" + mainTweet.user.username + "/'>" + mainTweet.user.username + "</a> On " + mainTweet.date_display + "</span><br>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + " (" + likes + ")</a></div></div><hr/>";
         }else{
-            tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>Like</a></div></div><hr/>";
+            tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + " (" + likes + ")</a></div></div><hr/>";
         }
         
         

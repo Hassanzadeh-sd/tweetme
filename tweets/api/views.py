@@ -29,6 +29,12 @@ class TweetListAPIView(generics.ListAPIView):
             )
         return qs
 
+
+    def get_serializer_context(self , *args, **kwargs):
+        context = super(TweetListAPIView, self).get_serializer_context()
+        context['request'] = self.request
+        return context
+
 class TweetCreateAPIView(generics.CreateAPIView):
     serializer_class = TweetModelSerializer        
     permission_classes = [permissions.IsAuthenticated]
