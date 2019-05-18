@@ -52,6 +52,30 @@
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
 
+    function formatTweet(tweetvalue){
+        var didlike =tweetvalue.didlike
+        var likeValue = "Like"
+        if (didlike){
+            likeValue = "Unlike"
+        }
+
+        var preContent='';
+        var tweetContent;
+        var isReply = tweetvalue.reply
+
+        if (tweetvalue.parent && !isReply){
+            tweetvalue = tweetvalue.parent
+            preContent="<span style='color:#9b9b9b;'>Retweet Via <a style='color:#9b9b9b;font-weight:bold' href='/" + tweetvalue.user.username + "/'>" + tweetvalue.user.username + "</a> On " + tweetvalue.date_display + "</span><br>"
+        }else if(tweetvalue.parent && isReply){
+            preContent="<span style='color:#9b9b9b;'>Reply to <a style='color:#9b9b9b;font-weight:bold' href='/" + tweetvalue.parent.user.username + "/'>@" + tweetvalue.parent.user.username + "</a></span><br>"
+        }
+
+        tweetContent = tweetvalue.content + "<br> via : " + "<a href='" + tweetvalue.user.profile_url + "'>" + tweetvalue.user.username + "</a>" + " | " + tweetvalue.date_display +  " | " + tweetvalue.timesince + "<a href='/tweets/" + tweetvalue.id + "'> View </a> | <a class='retweet' href='/api/tweets/retweet/" + tweetvalue.id + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + " (" + tweetvalue.likes + ")</a> | <a class='tweet-reply' data-id='" + tweetvalue.id + "' href='#'>Reply</a>"
+        var container = "<div class='media'><div class='media-body'>" + preContent + tweetContent + "</div></div><hr />"
+        return container
+    }
+
+
     function attach_tweet(tweetvalue, prepend, retweet_flag){
         var tweet_user = tweetvalue.user.username;
         var tweet_content = tweetvalue.content;
@@ -68,13 +92,7 @@
             likeValue = "Unlike"
         }
         
-        if (retweet_flag && tweetvalue.parent){
-            var mainTweet = tweetvalue.parent
-            tweet_formattedhtml = "<div class='media'><div class='media-body'><span style='color:#276090;'>Retweet Via <a href='/" + mainTweet.user.username + "/'>" + mainTweet.user.username + "</a> On " + mainTweet.date_display + "</span><br>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + " (" + likes + ")</a></div></div><hr/>";
-        }else{
-            tweet_formattedhtml = "<div class='media'><div class='media-body'>" + tweet_content + "<br> via : " + "<a href='" + profile_url + "'>" + tweet_user + "</a>" + " | " + tweet_date_display +  " | " + tweet_timesince + "<a href=" + tweet_link + "> View </a> | <a class='retweet' href='" + retweet_link + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + " (" + likes + ")</a></div></div><hr/>";
-        }
-        
+        tweet_formattedhtml = formatTweet(tweetvalue)
         
         // if prepen is true add to above of list        
         if (prepend == true){

@@ -42,7 +42,8 @@ class Tweet(models.Model):
     timestamp   = models.DateTimeField(auto_now_add=True)
     objects     = TweetManager()
     liked       = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True ,related_name='liked')
-
+    reply       = models.BooleanField(verbose_name='is a reply?', default=False)
+    
     def get_absolute_url(self):
         return reverse("tweet:detail", kwargs={"pk": self.pk})
    

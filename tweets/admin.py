@@ -3,6 +3,6 @@ from .models import Tweet
 from .forms import Tweetmodelform
 
 class TweetModelAdmin(admin.ModelAdmin):
-    form = Tweetmodelform
+    model = Tweet
 
 admin.site.register(Tweet, TweetModelAdmin)
