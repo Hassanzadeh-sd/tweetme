@@ -8,6 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
 
     <title>{% block title %}Tweetme : {% endblock  %}</title>
   </head>
@@ -19,11 +20,16 @@
     {% endblock %}
     </div>
     {% include "reply-model.html" %}
+
+    {% include "footer.html" %}
+    
+    
+    
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="{% static 'bootstrap/js/jquery-3.4.1.min.js' %}"></script>
     <script>
-    function loadTweetContainer(tweetContainerID){
+    function loadTweetContainer(tweetContainerID, fetchOneId){
     console.log("working");
     var tweets_list = [];
     var query = getParameterByName('q');
@@ -145,7 +151,26 @@
         });
     }
 
-    fetchTweets()
+    function fetchSingle(){
+        $.ajax({
+            url: '/api/tweets/' + fetchOneId +'/',
+            success: function(data , textStatus ,jqXHR){
+                tweets_list = data.results
+                parseTweets();
+                updateHashLinks();
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(textStatus)
+                console.log(errorThrown)
+            }
+        });
+    }
+
+    if (fetchOneId){
+        fetchSingle()
+    }else{
+        fetchTweets()
+    }
 
     var character_counter = 140; 
     var char_count = 0;

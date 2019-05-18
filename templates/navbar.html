@@ -1,3 +1,4 @@
+{% load static %}
 <nav class="navbar navbar-default">
 <div class="container">
 
@@ -9,7 +10,7 @@
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </button>
-<a class="navbar-brand" href="{% url 'home' %}">Tweetme</a>
+<a class="navbar-brand" style='display:inline;' href="{% url 'home' %}"><span><img style="vertical-align: -1px;margin-right: 8px;" src="{% static 'favicon.ico' %}" /></span><span>Tweet ME</span></a>
 </div>
 
 <!-- COLLAPSIBLE NAVBAR -->

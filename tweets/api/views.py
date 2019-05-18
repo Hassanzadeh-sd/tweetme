@@ -42,6 +42,16 @@ class TweetCreateAPIView(generics.CreateAPIView):
     def perform_create(self ,serializer):
         serializer.save(user=self.request.user)
 
+class TweetDetailAPIView(generics.ListAPIView):
+    serializer_class = TweetModelSerializer        
+    permission_classes = [permissions.AllowAny]
+    pagination_class = TweetsSetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        tweet_id = self.kwargs.get('pk')
+        qs = Tweet.objects.filter(pk=tweet_id)
+        return qs
+    
 class RetweetAPIView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 

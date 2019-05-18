@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+
+{% block script %}
+$( document ).ready(function() {
+    loadTweetContainer("tweet-container", {{ object.id }})
+});
+{% endblock script %}
+
 {% block content %}
 <div class="row">
     <div class="col-sm-3">
