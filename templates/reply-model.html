@@ -1,0 +1,24 @@
+<!-- Modal -->
+<div id="replyModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <form class='form tweet_form'>
+        {% csrf_token %}
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Reply to :</h4>
+                <span id='reply-content'></span>
+            </div>
+            <div class="modal-body">
+                    <textarea id='tweetReplyArea' class='form-control' name='content'></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input type='submit'  value='Reply' class='btn btn-primary' />
+            </div>
+        </form>
+    </div>
+  </div>
+</div>

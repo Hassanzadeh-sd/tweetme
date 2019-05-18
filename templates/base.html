@@ -18,6 +18,7 @@
     
     {% endblock %}
     </div>
+    {% include "reply-model.html" %}
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="{% static 'bootstrap/js/jquery-3.4.1.min.js' %}"></script>
@@ -70,7 +71,7 @@
             preContent="<span style='color:#9b9b9b;'>Reply to <a style='color:#9b9b9b;font-weight:bold' href='/" + tweetvalue.parent.user.username + "/'>@" + tweetvalue.parent.user.username + "</a></span><br>"
         }
 
-        tweetContent = tweetvalue.content + "<br> via : " + "<a href='" + tweetvalue.user.profile_url + "'>" + tweetvalue.user.username + "</a>" + " | " + tweetvalue.date_display +  " | " + tweetvalue.timesince + "<a href='/tweets/" + tweetvalue.id + "'> View </a> | <a class='retweet' href='/api/tweets/retweet/" + tweetvalue.id + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + " (" + tweetvalue.likes + ")</a> | <a class='tweet-reply' data-id='" + tweetvalue.id + "' href='#'>Reply</a>"
+        tweetContent ="<span class='content'>" + tweetvalue.content + "</span><br> via : " + "<a href='" + tweetvalue.user.profile_url + "'>" + tweetvalue.user.username + "</a>" + " | " + tweetvalue.date_display +  " | " + tweetvalue.timesince + "<a href='/tweets/" + tweetvalue.id + "'> View </a> | <a class='retweet' href='/api/tweets/retweet/" + tweetvalue.id + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + " (" + tweetvalue.likes + ")</a> | <a class='tweet-reply' data-user='" + tweetvalue.user.username + "'' data-id='" + tweetvalue.id + "' href='#'>Reply</a>"
         var container = "<div class='media'><div class='media-body'>" + preContent + tweetContent + "</div></div><hr />"
         return container
     }
@@ -148,10 +149,11 @@
 
     var character_counter = 140; 
     var char_count = 0;
-    $("#create_form").append("<span id='tweet_character_counter'> &nbsp; " + character_counter + "</span>")
-    var txt_character_counter = $("#tweet_character_counter");
+    
+    $(".tweet_form").append("<span class='tweet_character_counter' style='margin-left:20px;'> &nbsp; " + character_counter + " Left</span>")
 
-    $("#create_form textarea").keyup(function( event ) {
+    $(".tweet_form textarea").keyup(function( event ) {
+        var txt_character_counter = $(this).parent().parent().parent().find(".tweet_character_counter");
         char_count = $(this).val().length;
         character_counter = 140 - char_count;
         txt_character_counter.text("\xa0" + character_counter);
@@ -160,7 +162,7 @@
         else if(character_counter < 0){txt_character_counter.css("color", "red");}
     });
 
-    $("#create_form").submit(function(e) {
+    $(".tweet_form").submit(function(e) {
         e.preventDefault(); // avoid to execute the actual submit of the form.
 
         var form = $(this);
@@ -179,6 +181,7 @@
                     this_.find('input[type=text],textarea').val('')
                     attach_tweet(data , true)
                     updateHashLinks();
+                    $('#replyModal').modal('hide')
                 }
             }); 
         }
@@ -225,6 +228,27 @@
                 alert(data.responseJSON.message)
             }
         }); 
+    });
+
+    $(document).on('click', ".tweet-reply", function(e) {        
+        e.preventDefault()
+        this_ =  $(this)
+        var tweet_id;
+        var tweet_username;
+
+        parent_id   = this_.attr('data-id')
+        username    = this_.attr('data-user')
+        content     = this_.parent().find('.content').text()
+        
+        $('#replyModal').modal('show');
+        $('#replyModal').on("shown.bs.modal",function(){
+            $('#tweetReplyArea').focus()
+        })
+        $('#replyModal textarea').after("<input type='hidden' value='" + parent_id + "' name='parent_id' />")
+        $('#replyModal textarea').after("<input type='hidden' value='true' name='reply' />")
+        $('#replyModal #reply-content').text(content)
+        $('#replyModal textarea').val('@' + username + ' ');
+
     });
 
 }
