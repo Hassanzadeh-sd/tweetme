@@ -9,7 +9,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
-
+    <style>
+    .media-focus{
+        border: 2px solid #55ACEE;
+        padding: 20px;
+        border-radius: 7px;
+    }
+    </style>
     <title>{% block title %}Tweetme : {% endblock  %}</title>
   </head>
   <body>
@@ -21,7 +27,7 @@
     </div>
     {% include "reply-model.html" %}
 
-    {% include "footer.html" %}
+    {% comment %} {% include "footer.html" %} {% endcomment %}
     
     
     
@@ -69,6 +75,18 @@
         var preContent='';
         var tweetContent;
         var isReply = tweetvalue.reply
+        var replyId = tweetvalue.id
+        if (tweetvalue.parent){
+            replyId = tweetvalue.parent.id
+        }
+
+        var openinngContainerDiv = openinngContainerDiv = "<div class='media' >"
+        if (tweetvalue.id == fetchOneId){
+            openinngContainerDiv = "<div class='media media-focus' >"
+            setTimeout(function(){
+                $('.media-focus').removeClass("media-focus")
+            }, 3000)
+        }
 
         if (tweetvalue.parent && !isReply){
             tweetvalue = tweetvalue.parent
@@ -77,8 +95,8 @@
             preContent="<span style='color:#9b9b9b;'>Reply to <a style='color:#9b9b9b;font-weight:bold' href='/" + tweetvalue.parent.user.username + "/'>@" + tweetvalue.parent.user.username + "</a></span><br>"
         }
 
-        tweetContent ="<span class='content'>" + tweetvalue.content + "</span><br> via : " + "<a href='" + tweetvalue.user.profile_url + "'>" + tweetvalue.user.username + "</a>" + " | " + tweetvalue.date_display +  " | " + tweetvalue.timesince + "<a href='/tweets/" + tweetvalue.id + "'> View </a> | <a class='retweet' href='/api/tweets/retweet/" + tweetvalue.id + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + " (" + tweetvalue.likes + ")</a> | <a class='tweet-reply' data-user='" + tweetvalue.user.username + "'' data-id='" + tweetvalue.id + "' href='#'>Reply</a>"
-        var container = "<div class='media'><div class='media-body'>" + preContent + tweetContent + "</div></div><hr />"
+        tweetContent ="<span class='content'>" + tweetvalue.content + "</span><br> via : " + "<a href='" + tweetvalue.user.profile_url + "'>" + tweetvalue.user.username + "</a>" + " | " + tweetvalue.date_display +  " | " + tweetvalue.timesince + "<a href='/tweets/" + tweetvalue.id + "'> View </a> | <a class='retweet' href='/api/tweets/retweet/" + tweetvalue.id + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + " (" + tweetvalue.likes + ")</a> | <a class='tweet-reply' data-user='" + tweetvalue.user.username + "'' data-id='" + replyId + "' href='#'>Reply</a>"
+        var container = openinngContainerDiv + "<div class='media-body'>" + preContent + tweetContent + "</div></div><hr />"
         return container
     }
 

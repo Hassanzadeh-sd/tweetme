@@ -59,6 +59,18 @@ class Tweet(models.Model):
     def get_timesince(self):
         return timesince(self.timestamp) + " ago"        
 
+    def get_parent(self):
+        the_parent = self
+        if self.parent:
+            the_parent = self.parent
+        return the_parent
+
+    def get_children(self):
+        parent = self.get_parent()
+        qs = Tweet.objects.filter(parent=parent)
+        qs_parent = Tweet.objects.filter(pk = parent.pk)
+        return (qs | qs_parent)    
+
 def post_save_tweet_receiver(sender , instance, created , *args, **kwargs):
     if created:
         user_regx = r'@(?P<username>[\w.@+-]+)'

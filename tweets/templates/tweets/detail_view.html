@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-
+{% block title %}
+Tweet {{object.content}}
+{% endblock title %}
 {% block script %}
 $( document ).ready(function() {
     loadTweetContainer("tweet-container", {{ object.id }})
@@ -7,13 +9,11 @@ $( document ).ready(function() {
 {% endblock script %}
 
 {% block content %}
+<br>
 <div class="row">
-    <div class="col-sm-3">
-        {{ object.user }}
+    <div class="col-sm-8 col-sm-offset-2">
+    <div id="tweet-container"  data-url="/api/tweets/">
     </div>
-    <div class="col-sm-9">
-        {{ object.content }}<br>
-        {{ object.timestamp|timesince }}
-    </div>
-</div>
+    <span id="loadmore">Load More ... </span>
+<br><br>
 {% endblock content %}
