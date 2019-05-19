@@ -248,6 +248,7 @@
                 attach_tweet(data , true, true)
             },
             error: function(data, textStatus, errorThrown){
+                console.log(data)
                 alert(data.responseJSON.message)
             }
         }); 
@@ -309,8 +310,7 @@
           search_query = $(this).val()
           console.log("up")
           clearTimeout(typingtimer)
-          typingtimer = setTimeout(doneSearchTyping, 800)
-
+          typingtimer = setTimeout(doneSearchTyping, 1200)
         });
 
         search_input.keydown(function( event ) {
@@ -321,7 +321,7 @@
 
         function doneSearchTyping(){ 
             if(search_query){
-              var url = '/tweets/search/?q=' + search_query;
+              var url = '/?q=' + search_query;
               document.location.href = url;
             }
         }

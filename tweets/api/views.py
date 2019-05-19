@@ -7,6 +7,26 @@ from .pagination import TweetsSetPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+class SearchTweetAPIView(generics.ListAPIView):
+    queryset = Tweet.objects.all().order_by("-timestamp")
+    serializer_class = TweetModelSerializer
+    pagination_class = TweetsSetPagination
+
+    def get_queryset(self, *args, **kwargs):
+        qs = self.queryset
+        query = self.request.GET.get("q",None)
+        if query is not None:
+            qs = qs.filter(
+                Q(content__contains=query) |
+                Q(user__username__contains=query)
+            )
+        return qs
+
+    def get_serializer_context(self , *args, **kwargs):
+        context = super(SearchTweetAPIView, self).get_serializer_context()
+        context['request'] = self.request
+        return context
+
 class TweetListAPIView(generics.ListAPIView):
     serializer_class = TweetModelSerializer
     pagination_class = TweetsSetPagination
@@ -28,7 +48,6 @@ class TweetListAPIView(generics.ListAPIView):
                 Q(user__username__contains=query)
             )
         return qs
-
 
     def get_serializer_context(self , *args, **kwargs):
         context = super(TweetListAPIView, self).get_serializer_context()

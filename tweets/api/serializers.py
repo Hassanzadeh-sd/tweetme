@@ -27,9 +27,13 @@ class ParentTweetModelSerializer(serializers.ModelSerializer):
         return obj.liked.all().count()
 
     def get_didlike(self,obj):
-        user = self.context.get('request').user
-        if user in obj.liked.all():
-            return True
+        try:
+            request = self.context.get('request').user
+            user = request.user
+            if user in obj.liked.all():
+                return True
+        except:
+            pass
         return False
 
     def get_date_display(self , obj):
@@ -70,9 +74,12 @@ class TweetModelSerializer(serializers.ModelSerializer):
         return obj.liked.all().count()
 
     def get_didlike(self,obj):
-        user = self.context.get('request').user
-        if user in obj.liked.all():
-            return True
+        try:
+            user = self.context.get('request').user
+            if user in obj.liked.all():
+                return True
+        except:
+            pass
         return False
 
     def get_date_display(self , obj):

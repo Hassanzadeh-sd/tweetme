@@ -5,6 +5,7 @@ from django.conf import settings
 from django.utils.timesince import timesince
 from django.db.models.signals import post_save
 from hashtags.signals import parsed_hashtags
+from django.utils import timezone
 class TweetManager(models.Manager):
     def retweet(self, user , parent_obj):
         if parent_obj.parent:
@@ -12,7 +13,12 @@ class TweetManager(models.Manager):
         else:
             og_parent = parent_obj
 
-        qs = self.get_queryset().filter(user = user,parent = og_parent)
+        qs = self.get_queryset().filter(user = user,parent = og_parent).filter(
+            timestamp__year = timezone.now().year,
+            timestamp__month = timezone.now().month,
+            timestamp__day = timezone.now().day,
+            reply=False,
+        )
         if qs.exists():
             return parent_obj
 
