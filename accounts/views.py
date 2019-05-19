@@ -15,6 +15,7 @@ class account_Detailview(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["is_follow"] = UserProfile.objects.is_follow(self.request.user, self.get_object())
+        context['recommended'] = UserProfile.objects.recommended(self.request.user)
         return context
     
 

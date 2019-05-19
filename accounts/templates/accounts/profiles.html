@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block title %}
 Profiles {{obj_user.username}}
 {% endblock title %}Profiles {{obj_user.username}}
@@ -17,9 +16,29 @@ $( document ).ready(function() {
         <ul style="list-style:none;">
             <li><h2>{{obj_user.username}}</h2></li>
             {% if user != obj_user %}<li><h2><a class="btn btn-link" href="{% url 'profiles:follow' username=obj_user.username %}">{% if is_follow %}Unfollow{%else%}Follow{%endif%}</a></h2></li>{% endif %}
-            <li><h4>Following : {{ obj_user.profile.following.all.count }}</h4></li>
-            <li><h4>Followers : {{ obj_user.followed_by.all.count }}</h4></li>
         </ul>
+        <hr/>
+
+        <ul style="list-style:none;">
+        <li><h4>Following ({{ obj_user.profile.following.all.count }})</h4></li>
+        {% for obj in obj_user.profile.following.all %}
+            <li><a href="/{{ obj.username }}">{{ obj.username }}</a><br></li>
+        {% empty %}
+            <li><p>not followind any user</p><br></li>
+        {% endfor %}
+        </ul>
+
+        <br>
+
+        <ul style="list-style:none;">
+        <li><h4>Followed By ({{ obj_user.followed_by.all.count }})</h4></li>
+        {% for obj in obj_user.followed_by.all %}
+            <li><a href="/{{ obj.user.username }}">{{ obj.user.username }}</a><br></li>
+        {% empty %}
+            <li><p>not followed by any user</p><br></li>
+        {% endfor %}
+        </ul>
+
     </div>
     <div class="col-sm-9 col-xs-12">
         <br>
@@ -29,20 +48,6 @@ $( document ).ready(function() {
         </div>
         <span id="loadmore">Load More ... </span>
 
-        <h2>Following</h2><br>
-        {% for obj in obj_user.profile.following.all %}
-            <a href="/{{ obj.username }}">{{ obj.username }}</a><br>
-        {% empty %}
-            <p>not followind any user</p><br>
-        {% endfor %}
-
-        <h2>Followed By</h2><br>
-
-        {% for obj in obj_user.followed_by.all %}
-            <a href="/{{ obj.user.username }}">{{ obj.user.username }}</a><br>
-        {% empty %}
-            <p>not followed by any user</p><br>
-        {% endfor %}
         <br><br>
     </div>
 </div>

@@ -23,8 +23,6 @@ class UserProfileManager(models.Manager):
 
         return add
 
-    # check if user is not exist in user profile model return false 
-    # if exist and follow user return true 
     def is_follow(self, user , followed_by_user):
         user_profile, created = UserProfile.objects.get_or_create(user=user)
         if created:
@@ -33,6 +31,11 @@ class UserProfileManager(models.Manager):
             return True
         return False 
 
+    def recommended(self, user, limit_to=10):
+        profile = user.profile
+        following = profile.following.all()
+        qs = self.get_queryset().exclude(user__in=following).exclude(id=profile.id).order_by("?")[:limit_to]
+        return qs
 class UserProfile(models.Model):
     user        = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile", blank=True)
     following   = models.ManyToManyField(User,related_name="followed_by", blank=True)   

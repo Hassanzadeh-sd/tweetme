@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load recommended %}
 {% block title %}Tweet ME{% endblock  %}
 
 {% block script %}
@@ -12,7 +12,12 @@ $( document ).ready(function() {
 
 <br>
 <div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
+    <div class="col-sm-3">
+        <h2 class="text-center">{{ request.user }}</h2>
+        <hr/>
+        {% recommended request.user %}
+    </div>
+    <div class="col-sm-9">
 
 {% if not request.GET.q %}
     <div class="">
