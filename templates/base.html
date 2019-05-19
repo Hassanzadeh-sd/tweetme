@@ -44,7 +44,7 @@
     var APIUrl=tweetContainer.attr("data-url") || "/api/tweets/";
 
     function updateHashLinks(){
-        $(".media-body").each(function(data){
+        $(".content").each(function(data){
             var hashtagRegx = /(^|\s)#([\w\d-]+)/g
             var usernameRegx = /(^|\s)@([\w\d-]+)/g
             var newText;

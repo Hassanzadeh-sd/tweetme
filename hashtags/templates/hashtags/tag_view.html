@@ -2,24 +2,23 @@
 
 {% block title %}Hashtags{% endblock  %}
 
+{% block script %}
+$( document ).ready(function() {
+    loadTweetContainer("tweet-container")
+});
+{% endblock script %}
+
 {% block content %}
 
 <br>
-
 <div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
-        <div id="tweet-container">
-            {% for obj in  tag_tweets %}
-            <div class='media'>
-                <div class='media-body'>{{obj.content}}
-                <br> via :
-                <a href='/{{obj.user.profile}}/'>{{obj.user.profile}}</a>
-                    {{obj.get_date_display}} | {{obj.get_timesince}}"<a href='#'> View </a>
-                </div>
-                </div>
-            <hr/>
-            {% endfor %}
+    <div class="col-sm-11 col-sm-offset-1">
+        <h1> #{{obj.tag}}</h1>
+        <hr/>
+        <div id="tweet-container"  data-url="/api/tags/{{obj.tag}}/">
         </div>
+        <span id="loadmore">Load More ... </span>
+        <br>
     </div>
 </div>
 

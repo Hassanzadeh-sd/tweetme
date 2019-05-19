@@ -13,9 +13,7 @@ class HashTag(models.Model):
         return reverse("hashtag", kwargs={"tag": self.tag})
 
     def tag_tweets(self):
-        return Tweet.objects.filter(content__icontains=self.tag) 
-
-
+        return Tweet.objects.filter(content__icontains='#'+self.tag) 
 
 def parsed_hashtag_receiver(sender , hashtag_list , *args, **kwargs):
     for tag in hashtag_list:
