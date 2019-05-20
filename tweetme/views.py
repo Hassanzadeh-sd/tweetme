@@ -11,7 +11,7 @@ class SearchView(View):
         query = request.GET.get("q")
         qs = None
         if query:
-            qs= User.objects.filter(Q(username__icontains=query))
+            qs= User.objects.filter(Q(username__icontains=query)).exclude(Q(username=request.user))
 
         context ={'users':qs}
         return render(request, 'search.html' ,context)
