@@ -5,7 +5,11 @@
 Login TweetMe
 {% endblock title %}
 {% block content %}
-
+<br>
+<h1 class="text-center">Login Tweet ME</h1>
+<br>
+<div class="row">
+<div class="col-sm-6 col-sm-offset-3 text-center">
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
@@ -18,11 +22,7 @@ Login TweetMe
     <p>Please login to see this page.</p>
     {% endif %}
 {% endif %}
-<br>
-<h1 class="text-center">Login Tweet ME</h1>
-<br>
-<div class="row">
-<div class="col-sm-6 col-sm-offset-3 text-center">
+
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 {{ form|crispy }}
@@ -33,6 +33,5 @@ Login TweetMe
 </form>
 <br>
 {# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
 </div></div>
 {% endblock %}

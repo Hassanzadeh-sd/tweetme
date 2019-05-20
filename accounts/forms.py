@@ -9,7 +9,6 @@ class RegisterForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data['username']
-        print("clean Username")
         if User.objects.filter(username__icontains=username).exists():
             raise forms.ValidationError("The username is token")
         return username
@@ -17,14 +16,12 @@ class RegisterForm(forms.Form):
     def clean_password2(self):
         password1 = self.cleaned_data['password1']
         password2 = self.cleaned_data['password2']
-        print("clean password")
         if  (password1 != password2):
             raise forms.ValidationError("password confirm not same")
         return password2
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        print("clean email")
         if User.objects.filter(email__icontains=email).exists():
             raise forms.ValidationError("The email is already registered")
         return email

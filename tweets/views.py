@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from .models import Tweet
 from django.views.generic import DetailView, ListView, CreateView, View
@@ -5,7 +6,7 @@ from django.db.models import Q
 from .forms import Tweetmodelform
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-class tweet_listview(ListView):
+class tweet_listview(LoginRequiredMixin ,ListView):
     def get_queryset(self):
         qs = Tweet.objects.all()
         query = self.request.GET.get("q",None)
@@ -22,7 +23,7 @@ class tweet_listview(ListView):
         context['create_url'] = reverse("tweet:create")
         return context
     
-class tweet_Detailview(DetailView):
+class tweet_Detailview(LoginRequiredMixin,DetailView):
     template_name = 'tweets/detail_view.html'
     def get_object(self):
         print (self.kwargs)
@@ -30,7 +31,7 @@ class tweet_Detailview(DetailView):
         id=self.kwargs.get('pk')
         return Tweet.objects.get(id=id)
 
-class tweet_Createview(CreateView):
+class tweet_Createview(LoginRequiredMixin,CreateView):
     form_class = Tweetmodelform
     template_name = 'tweets/create_view.html'
 
@@ -38,7 +39,7 @@ class tweet_Createview(CreateView):
         form.instance.user = self.request.user
         return super(tweet_Createview, self).form_valid(form)
 
-class retweet_View(View):
+class retweet_View(LoginRequiredMixin,View):
     def get(self, request, pk, *args, **kwargs):
         tweet = get_object_or_404(Tweet, pk = pk)
         if request.user.is_authenticated:

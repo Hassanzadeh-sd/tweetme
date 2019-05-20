@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, HttpResponse, redirect
 from django.contrib.auth.models import User
 from django.views.generic import DetailView
@@ -23,7 +24,7 @@ class RegisterView(FormView):
         print("FORMVALID")
         return super(RegisterView, self).form_valid(form)
 
-class account_Detailview(DetailView):
+class account_Detailview(LoginRequiredMixin,DetailView):
     model = User
     slug_field = 'username'
     slug_url_kwarg = 'username'

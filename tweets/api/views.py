@@ -11,6 +11,7 @@ class SearchTweetAPIView(generics.ListAPIView):
     queryset = Tweet.objects.all().order_by("-timestamp")
     serializer_class = TweetModelSerializer
     pagination_class = TweetsSetPagination
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         qs = self.queryset
@@ -30,6 +31,7 @@ class SearchTweetAPIView(generics.ListAPIView):
 class TweetListAPIView(generics.ListAPIView):
     serializer_class = TweetModelSerializer
     pagination_class = TweetsSetPagination
+    permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self, *args, **kwargs):
         requested_user = self.kwargs.get('username')
