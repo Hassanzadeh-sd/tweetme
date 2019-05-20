@@ -15,6 +15,9 @@
         padding: 20px;
         border-radius: 7px;
     }
+    .tweet-likeicon{
+        width:16px;
+    }
     </style>
     <title>{% block title %}Tweetme : {% endblock  %}</title>
   </head>
@@ -67,9 +70,9 @@
 
     function formatTweet(tweetvalue){
         var didlike =tweetvalue.didlike
-        var likeValue = "Like"
+        var likeValue = "<img class='tweet-likeicon' src='{% static 'icons/like.png' %}' />"
         if (didlike){
-            likeValue = "Unlike"
+            likeValue = "<img class='tweet-likeicon' src='{% static 'icons/liked.png' %}' />"
         }
 
         var preContent='';
@@ -95,7 +98,7 @@
             preContent="<span style='color:#9b9b9b;'>Reply to <a style='color:#9b9b9b;font-weight:bold' href='/" + tweetvalue.parent.user.username + "/'>@" + tweetvalue.parent.user.username + "</a></span><br>"
         }
 
-        tweetContent ="<span class='content'>" + tweetvalue.content + "</span><br> via : " + "<a href='" + tweetvalue.user.profile_url + "'>" + tweetvalue.user.username + "</a>" + " | " + tweetvalue.date_display +  " | " + tweetvalue.timesince + "<a href='/tweets/" + tweetvalue.id + "'> View </a> | <a class='retweet' href='/api/tweets/retweet/" + tweetvalue.id + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + " (" + tweetvalue.likes + ")</a> | <a class='tweet-reply' data-user='" + tweetvalue.user.username + "'' data-id='" + replyId + "' href='#'>Reply</a>"
+        tweetContent ="<span class='content'>" + tweetvalue.content + "</span><br> via : " + "<a href='" + tweetvalue.user.profile_url + "'>" + tweetvalue.user.username + "</a>" + " | " + tweetvalue.date_display +  " | " + tweetvalue.timesince + "<a href='/tweets/" + tweetvalue.id + "'> View </a> | <a class='retweet' href='/api/tweets/retweet/" + tweetvalue.id + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + "(<span id='like-counts'>" + tweetvalue.likes + "</span>)</a> | <a class='tweet-reply' data-user='" + tweetvalue.user.username + "'' data-id='" + replyId + "' href='#'>Reply</a>"
         var container = openinngContainerDiv + "<div class='media-body'>" + preContent + tweetContent + "</div></div><hr />"
         return container
     }
@@ -112,9 +115,9 @@
         var retweet_link = "/api/tweets/retweet/" + tweetvalue.id
         var likes = tweetvalue.likes;
         var didlike =tweetvalue.didlike
-        var likeValue = "Like"
+        var likeValue = "<img class='tweet-like' src='{% static 'icons/like.png' %}' />"
         if (didlike){
-            likeValue = "Unlike"
+            likeValue = "<img class='tweet-like' src='{% static 'icons/liked.png' %}' />"
         }
         
         tweet_formattedhtml = formatTweet(tweetvalue)
@@ -263,9 +266,13 @@
             success: function(data)
             {
                 if (data.liked){
-                    this_.text("liked")
+                    this_.find("img").attr('src', '{% static 'icons/liked.png' %}');
+                    var likecount = this_.find("#like-counts").text()
+                    this_.find("#like-counts").text(parseInt(likecount, 10)+1)
                 }else{
-                    this_.text("Unliked")
+                    this_.find("img").attr('src', '{% static 'icons/like.png' %}');
+                    var likecount = this_.find("#like-counts").text()
+                    this_.find("#like-counts").text(parseInt(likecount, 10)-1)
                 }
             },
             error: function(data, textStatus, errorThrown){
