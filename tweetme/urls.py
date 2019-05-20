@@ -22,8 +22,12 @@ from hashtags.views import tags_view
 from .views import SearchView
 from tweets.api.views import SearchTweetAPIView
 from hashtags.api.views import TagTweetAPIView
+from accounts.views import RegisterView
+
 
 urlpatterns = [
+    url(r'^', include('django.contrib.auth.urls')),
+    url(r'^register/', RegisterView.as_view(), name='register'),
     url(r'^admin/', admin.site.urls),
     url(r'^$', tweet_listview.as_view() , name='home'),
     url(r'^search/$', SearchView.as_view() , name='search'),

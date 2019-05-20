@@ -55,6 +55,10 @@ def post_save_user_receiver(sender , instance, created , *args, **kwargs):
     print("HIIII SIGNAL")
     print(instance)
     if created:
-        new_profile = UserProfile.objects.get_or_created(user = instance)
+        try:
+            new_profile = UserProfile.objects.get_or_created(user = instance)
+        except:
+            pass
+
 
 post_save.connect(post_save_user_receiver, sender=User)
