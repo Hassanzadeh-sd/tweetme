@@ -15,11 +15,11 @@ $( document ).ready(function() {
     <div class="col-sm-3 col-xs-12">
         <ul style="list-style:none;">
             <li><h2>{{obj_user.username}}</h2></li>
-            {% if user != obj_user %}<li><h2><a class="btn btn-link" href="{% url 'profiles:follow' username=obj_user.username %}">{% if is_follow %}Unfollow{%else%}Follow{%endif%}</a></h2></li>{% endif %}
+            {% if user != obj_user %}<li><h2><a class="btn btn-link follow-btn" href="{% url 'profiles:follow' username=obj_user.username %}">{% if is_follow %}Unfollow{%else%}Follow{%endif%}</a></h2></li>{% endif %}
         </ul>
         <hr/>
 
-        <ul style="list-style:none;">
+        <ul class="follow-list">
         <li><h4>Following ({{ obj_user.profile.following.all.count }})</h4></li>
         {% for obj in obj_user.profile.following.all %}
             <li><a href="/{{ obj.username }}">{{ obj.username }}</a><br></li>
@@ -30,7 +30,7 @@ $( document ).ready(function() {
 
         <br>
 
-        <ul style="list-style:none;">
+        <ul class="follow-list">
         <li><h4>Followed By ({{ obj_user.followed_by.all.count }})</h4></li>
         {% for obj in obj_user.followed_by.all %}
             <li><a href="/{{ obj.user.username }}">{{ obj.user.username }}</a><br></li>
