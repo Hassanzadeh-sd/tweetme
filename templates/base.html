@@ -10,9 +10,14 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
     <style>
+    span.content {
+        font-size: 20px;
+    }
+    span.content-bar {
+        font-size: 11px;
+    }
     .follow-list{
         list-style:none;
-
     }
     .follow-list li a {
         color: #636262 !important;
@@ -59,14 +64,20 @@
         border-radius: 7px;
     }
     .tweet-likeicon{
-        width:16px;
+        width: 14px;
+        margin-right: 4px;
     }
     .blog-footer {
         padding: 40px 0;
         color: #999;
         text-align: center;
-        background-color: #f9f9f9;
+        background-color: #f8f8f8;
         border-top: 1px solid #e5e5e5;
+    }
+    .modal-content .tweet_character_counter {
+        margin-top: -7%;
+        font-size: 13px;
+        position: absolute;
     }
     </style>
     <title>{% block title %}Tweetme : {% endblock  %}</title>
@@ -148,7 +159,7 @@
             preContent="<span style='color:#9b9b9b;'>Reply to <a style='color:#9b9b9b;font-weight:bold' href='/" + tweetvalue.parent.user.username + "/'>@" + tweetvalue.parent.user.username + "</a></span><br>"
         }
 
-        tweetContent ="<span class='content'>" + tweetvalue.content + "</span><br> via : " + "<a href='" + tweetvalue.user.profile_url + "'>" + tweetvalue.user.username + "</a>" + " | " + tweetvalue.date_display +  " | " + tweetvalue.timesince + "<a href='/tweets/" + tweetvalue.id + "'> View </a> | <a class='retweet' href='/api/tweets/retweet/" + tweetvalue.id + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + "(<span id='like-counts'>" + tweetvalue.likes + "</span>)</a> | <a class='tweet-reply' data-user='" + tweetvalue.user.username + "'' data-id='" + replyId + "' href='#'>Reply</a>"
+        tweetContent ="<span class='content'>" + tweetvalue.content + "</span><br><span class='content-bar'> via : " + "<a href='" + tweetvalue.user.profile_url + "'>" + tweetvalue.user.username + "</a>" + " | " + tweetvalue.date_display +  " | " + tweetvalue.timesince + "<a href='/tweets/" + tweetvalue.id + "'> View </a> | <a class='retweet' href='/api/tweets/retweet/" + tweetvalue.id + "'>Retweet</a> | <a class='tweet-like' data-id='" + tweetvalue.id + "' href='#'>" + likeValue + "(<span id='like-counts'>" + tweetvalue.likes + "</span>)</a> | <a class='tweet-reply' data-user='" + tweetvalue.user.username + "'' data-id='" + replyId + "' href='#'>Reply</a></span>"
         var container = openinngContainerDiv + "<div class='media-body'>" + preContent + tweetContent + "</div></div><hr />"
         return container
     }
