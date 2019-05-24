@@ -1,4 +1,6 @@
 # TweetME
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+
 Mini Twitter project built with Django-framework with Bootstrap and Ajax
 
 
