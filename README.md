@@ -2,6 +2,20 @@
 Mini Twitter project built with Django-framework with Bootstrap and Ajax
 
 
+### Run Project
+in tweetme directory run this command :
+
+```sh
+python manage.py runserver
+```
+
+open in your preferred browser like this :
+
+```sh
+127.0.0.1:8000
+```
+
+
 ### Tech
 
 Mini Twitter uses a number of open source projects to work properly:
@@ -18,3 +32,12 @@ Mini Twitter uses a number of open source projects to work properly:
   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
   [jQuery]: <http://jquery.com>
   [Ajax]: <http://api.jquery.com/jquery.ajax/>
+  
+
+License
+----
+
+MIT
+
+
+**Free Software, Hell Yeah!**
