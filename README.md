@@ -5,6 +5,12 @@ Mini Twitter project built with Django-framework with Bootstrap and Ajax
 
 
 ### Run Project
+first install all packages :
+
+```sh
+pip install -r requirements.txt
+```
+
 in root directory run this command :
 
 ```sh
