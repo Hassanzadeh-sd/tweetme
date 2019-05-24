@@ -36,11 +36,11 @@ Mini Twitter uses a number of open source projects to work properly:
   [Ajax]: <http://api.jquery.com/jquery.ajax/>
   
 
-## Authors
+## Author
 
-* **Hassanzadeh Sajajd** - *website* - [mrHassanzadeh](http://mrhassanzadeh.ir)
+* **Hassanzadeh Sajajd** - *personal website* - [MR](http://mrhassanzadeh.ir)
 
-See also the list of [projects](https://github.com/Hassanzadeh-sd?tab=repositories)
+- See also the list of [projects](https://github.com/Hassanzadeh-sd?tab=repositories)
 
 License
 ----
