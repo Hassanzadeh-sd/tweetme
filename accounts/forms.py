@@ -6,6 +6,11 @@ class RegisterForm(forms.Form):
     email       = forms.EmailField()
     password1   = forms.CharField(widget=forms.PasswordInput,label="Password")
     password2   = forms.CharField(widget=forms.PasswordInput,label="Confirm password")
+    avatar      = forms.ImageField()
+
+    def clean_avatar(self):
+        print(self.cleaned_data['avatar'])
+        pass
 
     def clean_username(self):
         username = self.cleaned_data['username']

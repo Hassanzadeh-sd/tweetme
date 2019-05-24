@@ -40,6 +40,7 @@ class UserProfile(models.Model):
     user        = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile", blank=True)
     following   = models.ManyToManyField(User,related_name="followed_by", blank=True)   
     objects = UserProfileManager()
+    avatar      = models.ImageField(upload_to='images/', default = '/images/NoProfile.jpg', null=True, blank=True )
 
     def get_following(self):
         users = self.following.all()
@@ -50,6 +51,7 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
 
 def post_save_user_receiver(sender , instance, created , *args, **kwargs):
     print("HIIII SIGNAL")

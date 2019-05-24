@@ -13,6 +13,8 @@ $( document ).ready(function() {
 <br>
 <div class="row">
     <div class="col-sm-3">
+        <div class="profile-img"><img src="{{ request.user.profile.avatar.url }}" class="img-fluid" /></div>
+        <br>
         <h2 class="text-center">{{ request.user }}</h2>
         <hr/>
         {% recommended request.user %}

@@ -21,7 +21,15 @@ class RegisterView(FormView):
         new_user = User.objects.create(username=username, email=email)
         new_user.set_password(password1)
         new_user.save()
-        print("FORMVALID")
+
+        # try:
+        obj_new_user = User.objects.get(username=username)
+        obj_user_profile, created = UserProfile.objects.get_or_create(user = obj_new_user)
+        print(self.get_form_kwargs().get('files')['avatar'])
+        obj_user_profile.avatar = self.get_form_kwargs().get('files')['avatar']
+        obj_user_profile.save()
+        # except:
+        #     pass
         return super(RegisterView, self).form_valid(form)
 
 class account_Detailview(LoginRequiredMixin,DetailView):

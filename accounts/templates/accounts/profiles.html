@@ -14,8 +14,9 @@ $( document ).ready(function() {
 <div class="row">
     <div class="col-sm-3 col-xs-12">
         <ul style="list-style:none;">
-            <li><h2>{{obj_user.username}}</h2></li>
-            {% if user != obj_user %}<li><h2><a class="btn btn-link follow-btn" href="{% url 'profiles:follow' username=obj_user.username %}">{% if is_follow %}Unfollow{%else%}Follow{%endif%}</a></h2></li>{% endif %}
+            <div class="profile-img-profile"><img src="{{ obj_user.profile.avatar.url }}" class="img-fluid" /></div>
+            <li><h2 class='text-center'>{{obj_user.username}}</h2></li>
+            {% if user != obj_user %}<li><h2 class='text-center'><a class="btn btn-link follow-btn" href="{% url 'profiles:follow' username=obj_user.username %}">{% if is_follow %}Unfollow{%else%}Follow{%endif%}</a></h2></li>{% endif %}
         </ul>
         <hr/>
 
