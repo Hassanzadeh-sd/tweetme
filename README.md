@@ -5,7 +5,7 @@ Mini Twitter project built with Django-framework with Bootstrap and Ajax
 
 
 ### Run Project
-in tweetme directory run this command :
+in root directory run this command :
 
 ```sh
 python manage.py runserver
