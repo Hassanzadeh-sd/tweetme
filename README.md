@@ -44,7 +44,7 @@ Mini Twitter uses a number of open source projects to work properly:
 
 ## Author
 
-* **Hassanzadeh Sajajd** - *personal website* - [MR](http://mrhassanzadeh.ir)
+* **Hassanzadeh Sajjad** - *personal website* - [MR](http://mrhassanzadeh.ir)
 
 - See also the list of [projects](https://github.com/Hassanzadeh-sd?tab=repositories)
 
