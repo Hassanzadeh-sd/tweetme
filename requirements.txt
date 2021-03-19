@@ -1,7 +1,7 @@
 Django==2.2.2
 django-crispy-forms==1.7.2
 django-filter==2.1.0
-djangorestframework==3.9.3
+djangorestframework==3.11.2
 Markdown==3.1
 Pillow==6.0.0
 pkg-resources==0.0.0
